@@ -11,7 +11,3 @@ The platform is divided in 3 diferent parts :
 * **The web dashboard**, are independents from the back-end, two client are developed on separate repository :
   * **[FireBrok-Angular](#)**, dashboard built with [angular](https://angular.io).
   * **[FireBrok-Vue](#)**, dashboard built with [Vue.js](https://vuejs.org).
-
-### Install the aggregator
-
-### Install the back-end
