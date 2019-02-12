@@ -1,0 +1,10 @@
+{"users": [
+{
+  "localId": "4L8BHK1lrtSlliKifsNbSuisJDh2",
+  "email": "admin@test.ch",
+  "emailVerified": false,
+  "passwordHash": "ewfWkaPKclRBcqkJ42G/9OAVhexdGeiz85jWvy30lG5RmOKD0aPBK5ImbHsbNE4uQdKGMHUIUquuvo95FGzPMA==",
+  "salt": "MvMNt9XK2rlzAg==",
+  "createdAt": "1549956510000",
+  "providerUserInfo": []
+}]}
