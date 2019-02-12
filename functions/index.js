@@ -7,7 +7,7 @@ const functions = require('firebase-functions');
 //  response.send("Hello from Firebase!");
 // });
 
-exports.newAutomaton = functions.region('asia-northeast1').https.onCall((data, context) => {
+exports.newAutomaton = functions.region('europe-west1').https.onCall((data, context) => {
   console.info("newAutomaton function called")
   return {
     message: `Function corectly called with text : ${data.text}`
