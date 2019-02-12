@@ -29,10 +29,12 @@ server.on('connection', function (stream) {
     // client published
     client.on('publish', function (packet) {
         // send a puback with messageId (for QoS > 0)
-        var docRef = colRef.doc(packet.topic)
-        docRef2.doc((new Date).toLocaleString())
 
-        var setAda = docRef2.set({
+        var inDocRef = colRef.doc(packet.topic).collection("flux").doc()
+
+
+        //(new Date).toLocaleString()
+        var setAda = inDocRef.set({
             message: packet.payload.toString('utf8'),
             timestamp: (new Date).toLocaleString()
         }, {merge: false});
