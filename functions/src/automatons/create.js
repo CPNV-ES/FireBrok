@@ -6,7 +6,8 @@
  */
 exports.default = (data, context) => {
   console.info("newAutomaton function called")
+  console.info(data.name)
   return {
-    message: `Function corectly called with text : ${data.text}`
+    message: `Function corectly called with text : ${data.name}`
   }
 }
