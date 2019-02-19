@@ -19,30 +19,38 @@ var colRef = db.collection('automatons');
 server.on('connection', function (stream) {
     var client = mqttCon(stream)
 
+    var user    
+    //console.log(client.username)
+
     // client connected
     client.on('connect', function (packet) {
         // acknowledge the connect packet
+        user = packet.username
         console.log("Client connected !")
         client.connack({ returnCode: 0 });
+
+            // client published
+        client.on('publish', function (packet) {
+            // send a puback with messageId (for QoS > 0)
+
+            var inDocRef = colRef.doc(user).collection("topics").doc(packet.topic).collection("flux").doc()
+            //console.log(inDocRef)
+
+            //(new Date).toLocaleString()
+            var setAda = inDocRef.set({
+                message: packet.payload.toString('utf8'),
+                timestamp: (new Date).toLocaleString()
+            }, {merge: false});
+            console.log("Topic : " + packet.topic)
+            console.log("Message : " + packet.payload.toString('utf8'))
+
+            //client.puback({ messageId: packet.messageId })
+        })
+
+
     })
 
-    // client published
-    client.on('publish', function (packet) {
-        // send a puback with messageId (for QoS > 0)
 
-        var inDocRef = colRef.doc(packet.topic).collection("flux").doc()
-
-
-        //(new Date).toLocaleString()
-        var setAda = inDocRef.set({
-            message: packet.payload.toString('utf8'),
-            timestamp: (new Date).toLocaleString()
-        }, {merge: false});
-        console.log("Topic : " + packet.topic)
-        console.log("Message : " + packet.payload.toString('utf8'))
-
-        //client.puback({ messageId: packet.messageId })
-    })
 
     // client pinged
     client.on('pingreq', function () {
