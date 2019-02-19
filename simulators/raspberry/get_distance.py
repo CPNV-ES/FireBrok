@@ -58,7 +58,7 @@ while True:
     distance = round(distance, 2)
 
     # Send the mesured value to the Broker
-    mqtt_c.publish("raspberry_ultrasonic", distance)
+    mqtt_c.publish("ultrasonic3", distance)
     print ("Distance:",distance,"cm")
 
 # Clean GPIO pins assignments
