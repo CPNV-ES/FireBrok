@@ -1,6 +1,6 @@
 /**
  * newAutomaton
- * 
+ *
  * Creates a new automaton in the databse, and generates authentication key for the automaton
  * @author Bastien Nicoud
  */
