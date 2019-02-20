@@ -2,6 +2,7 @@
 
 > A next generation Broker for IoT applications.
 > Find detailed documentation in the [docs folder](./docs).
+> **v0.1.0**
 
 ## Setup
 
