@@ -4,17 +4,15 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase)
 
 // Declate cors middleware
-const cors = require('cors')({ origin: true})
+// const cors = require('cors')({ origin: true})
 
 // Load functions
 const createAutomaton = require('./src/automatons/create').default
 const updateAutomaton = require('./src/automatons/update').default
-const newUser = require('./newUser')
 
 /**
  * USERS FUNCTIONS
  */
-exports.newUser = newUser
 
 /**
  * AUTOMATON FUNCTIONS

@@ -7,12 +7,12 @@ const admin = require('firebase-admin')
  * @author Bastien Nicoud
  */
 exports.default = (data, context) => {
-  console.log('create_automaton CALLED')
+  console.log('create_automaton CALLED !!!')
   // Check authentication
   // Validates the form
   // Add the element to the db
   // Return success
-  admin
+  return admin
     .firestore()
     .collection('automatons')
     .add(data)
