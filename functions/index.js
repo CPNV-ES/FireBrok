@@ -5,13 +5,14 @@ const functions = require('firebase-functions')
 const cors = require('cors')({ origin: true})
 
 // Load functions
-const createAutomaton = require('./src/automatons/create')
+const createAutomaton = require('./src/automatons/create').default
+const updateAutomaton = require('./src/automatons/update').default
 const newUser = require('./newUser')
 
 /**
  * USERS FUNCTIONS
  */
- exports.newUser = newUser
+exports.newUser = newUser
 
 /**
  * AUTOMATON FUNCTIONS
@@ -20,3 +21,7 @@ exports.create_automaton = functions
   .region('europe-west1')
   .https
   .onCall(createAutomaton)
+exports.update_automaton = functions
+  .region('europe-west1')
+  .https
+  .onRequest(updateAutomaton)
