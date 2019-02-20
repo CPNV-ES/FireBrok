@@ -1,4 +1,8 @@
-const admin = require('firebase-admin')
+import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin'
+
+import { Automaton } from './Automaton'
+import { CallableContext } from 'firebase-functions/lib/providers/https';
 
 /**
  * createAutomaton
@@ -6,7 +10,7 @@ const admin = require('firebase-admin')
  * Creates a new automaton in the databse, and generates authentication key for the automaton
  * @author Bastien Nicoud
  */
-exports.default = (data, context) => {
+export function createAutomaton (data: Automaton, context: CallableContext) {
   console.log('create_automaton CALLED !!!')
   // Check authentication
   // Validates the form
@@ -24,6 +28,6 @@ exports.default = (data, context) => {
     })
     .catch(e => {
       console.error(e)
-      throw new functions.https.HttpsError('failed to create the automaton')
+      throw new functions.https.HttpsError('unavailable', 'failed to create the automaton in database')
     })
 }
