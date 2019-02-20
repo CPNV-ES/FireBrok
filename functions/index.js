@@ -1,5 +1,7 @@
 // Load firebase functions sdk
 const functions = require('firebase-functions')
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase)
 
 // Declate cors middleware
 const cors = require('cors')({ origin: true})

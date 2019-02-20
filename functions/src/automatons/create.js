@@ -1,3 +1,5 @@
+const admin = require('firebase-admin')
+
 /**
  * createAutomaton
  *
@@ -5,9 +7,23 @@
  * @author Bastien Nicoud
  */
 exports.default = (data, context) => {
-  console.info("newAutomaton function called")
-  console.info(data.name)
-  return {
-    message: `Function corectly called with text : ${data.name}`
-  }
+  console.log('create_automaton CALLED')
+  // Check authentication
+  // Validates the form
+  // Add the element to the db
+  // Return success
+  admin
+    .firestore()
+    .collection('automatons')
+    .add(data)
+    .then(ref => {
+      console.log(ref)
+      return {
+        automatonId: ref.id
+      }
+    })
+    .catch(e => {
+      console.error(e)
+      throw new functions.https.HttpsError('failed to create the automaton')
+    })
 }
