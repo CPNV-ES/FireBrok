@@ -1,8 +1,10 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 
-import { Automaton } from './Automaton'
+import { Automaton, Rules } from './Automaton'
 import { CallableContext } from 'firebase-functions/lib/providers/https';
+
+import { validate } from 'validate.js'
 
 /**
  * createAutomaton
@@ -11,15 +13,16 @@ import { CallableContext } from 'firebase-functions/lib/providers/https';
  * @author Bastien Nicoud
  */
 export function createAutomaton (data: Automaton, context: CallableContext) {
+  // Check authentication
   if (context.auth === undefined) {
     throw new functions.https.HttpsError('unauthenticated', 'You must be authenticated to call the create_automaton function.')
   }
-  console.log(context.auth)
-  console.log('create_automaton CALLED !!!')
-  // Check authentication
-  // Validates the form
-  // Add the element to the db
-  // Return success
+  // Validate datas
+  const errors = validate(data, Rules, { format: 'flat'}) || false
+  if (errors) {
+    throw new functions.https.HttpsError('failed-precondition', errors)
+  }
+  // Add to db
   return admin
     .firestore()
     .collection('automatons')
@@ -30,13 +33,11 @@ export function createAutomaton (data: Automaton, context: CallableContext) {
       updated_at: admin.firestore.Timestamp.fromDate(new Date())
     })
     .then(ref => {
-      console.log(ref)
       return {
         automatonId: ref.id
       }
     })
     .catch(e => {
-      console.error(e)
       throw new functions.https.HttpsError('unavailable', 'failed to create the automaton in database')
     })
 }
