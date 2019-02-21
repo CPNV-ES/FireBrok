@@ -25,6 +25,7 @@ export function createAutomaton (data: Automaton, context: CallableContext) {
     .collection('automatons')
     .add({
       ...data,
+      connected: false,
       created_at: admin.firestore.Timestamp.fromDate(new Date()),
       updated_at: admin.firestore.Timestamp.fromDate(new Date())
     })
