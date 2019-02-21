@@ -11,6 +11,10 @@ import { CallableContext } from 'firebase-functions/lib/providers/https';
  * @author Bastien Nicoud
  */
 export function createAutomaton (data: Automaton, context: CallableContext) {
+  if (context.auth === undefined) {
+    throw new functions.https.HttpsError('unauthenticated', 'You must be authenticated to call the create_automaton function.')
+  }
+  console.log(context.auth)
   console.log('create_automaton CALLED !!!')
   // Check authentication
   // Validates the form
@@ -19,7 +23,11 @@ export function createAutomaton (data: Automaton, context: CallableContext) {
   return admin
     .firestore()
     .collection('automatons')
-    .add(data)
+    .add({
+      ...data,
+      created_at: admin.firestore.Timestamp.fromDate(new Date()),
+      updated_at: admin.firestore.Timestamp.fromDate(new Date())
+    })
     .then(ref => {
       console.log(ref)
       return {
