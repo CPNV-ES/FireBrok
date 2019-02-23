@@ -65,3 +65,5 @@ node_modules/
 .env
 
 aggregator/node/token/firebrok-firebase-adminsdk-o8itf-963da3c09e\.json
+
+.idea
