@@ -64,4 +64,6 @@ node_modules/
 # dotenv environment variables file
 .env
 
-aggregator/token/firebrok-firebase-adminsdk-o8itf-963da3c09e\.json
+aggregator/node/token/firebrok-firebase-adminsdk-o8itf-963da3c09e\.json
+
+.idea

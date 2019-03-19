@@ -44,7 +44,7 @@ server.on('connection', function (stream) {
             })
 
 
-        
+
         client.connack({ returnCode: 0 });
 
         // client published
@@ -92,13 +92,13 @@ server.on('connection', function (stream) {
         stream.setTimeout(1000 * 60 * 5)
 
         // connection error handling
-        client.on('close', function () { 
+        client.on('close', function () {
             console.log(`Automaton ${automaton} connection close`)
-            client.destroy() 
+            client.destroy()
         })
-        client.on('error', function () { 
+        client.on('error', function () {
             console.log(`Automaton ${automaton} connection error`)
-            client.destroy() 
+            client.destroy()
         })
         client.on('disconnect', function () {
             console.log(`Automaton ${automaton} connection disconnect`)
@@ -108,7 +108,7 @@ server.on('connection', function (stream) {
         // stream timeout
         stream.on('timeout', function () {
             console.log(`Automaton ${automaton} connection timeout`)
-            client.destroy() 
+            client.destroy()
         })
     })
 })

@@ -7,7 +7,7 @@
 * **[Manage firestore rules](./firestore.md)**
 * **[Simulate an MQTT client](./simulators.md)**
 
-## Workflow
+## Platform Workflow
 
 ## Diagrams
 
