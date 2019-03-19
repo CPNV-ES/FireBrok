@@ -2,7 +2,12 @@
 
 > A next generation Broker for IoT applications.
 > Find detailed documentation in the [docs folder](./docs).
-> **v0.1.0**
+
+## Changelog - v0.1.1
+
+* Authentication check on the create_automatons function
+* Validates datas on submit of the create_automatons function
+* New python simulator, to push test datas
 
 ## Setup
 
