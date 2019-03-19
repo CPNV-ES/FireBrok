@@ -30,7 +30,8 @@ export function createAutomaton (data: Automaton, context: CallableContext) {
       ...data,
       connected: false,
       created_at: admin.firestore.Timestamp.fromDate(new Date()),
-      updated_at: admin.firestore.Timestamp.fromDate(new Date())
+      updated_at: admin.firestore.Timestamp.fromDate(new Date()),
+      owner: context.auth.uid
     })
     .then(ref => {
       return {
