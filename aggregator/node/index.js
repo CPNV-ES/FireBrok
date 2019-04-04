@@ -22,24 +22,35 @@ server.on('connection', function (stream) {
 
     // client connected
     client.on('connect', function (packet) {
-        // acknowledge the connect packet
-        let automaton = packet.username
+
         let authorized = false
+        var automatonName = packet.username
+        var automatonId = packet.password.toString('utf8')
 
-        console.log(`Automaton ${automaton} connected`)
+        // Check if not empty, null or undefined
+        if (automatonName == null || automatonName == undefined || automatonName == "" || automatonId == null || automatonId == undefined || automatonId == "") {
+            client.destroy()
+        }
+        
 
-        automatonsCol.doc(automaton).get()
+        console.log(`Automaton ${automatonName} connected`)
+
+        automatonsCol.doc(automatonId).get()
             .then(doc => {
-                if (!doc.exists) {
-                    console.log(`Automaton ${automaton} refused`)
+                if (!doc.exists || doc.data().name != automatonName) {
+                    console.log(`Automaton ${automatonName} refused`)
                     client.destroy()
                 } else {
-                    console.log(`Automaton ${automaton} authorized`)
+                    console.log(`Automaton ${automatonName} authorized`)
+
+                    automatonsCol.doc(automatonId).set({
+                        connected: true
+                    }, { merge: true })
                     authorized = true
                 }
             })
             .catch(err => {
-                console.log(`Automaton ${automaton} refused`)
+                console.log(err)
                 client.destroy()
             })
 
@@ -49,40 +60,40 @@ server.on('connection', function (stream) {
 
         // client published
         client.on('publish', function (packet) {
-            if(!authorized){
+            if (!authorized) {
                 return
             }
 
             let currentDate = new Date()
             let topic = packet.topic
 
-            automatonsCol.doc(automaton).set({
+            automatonsCol.doc(automatonId).set({
                 updated_at: admin.firestore.Timestamp.fromDate(currentDate)
-            }, {merge: true})
+            }, { merge: true })
 
-            automatonsCol.doc(automaton).collection("topics").doc(topic).get()
+            automatonsCol.doc(automatonId).collection("topics").doc(topic).get()
                 .then(doc => {
                     if (!doc.exists) {
-                        automatonsCol.doc(automaton).collection("topics").doc(topic).set({
+                        automatonsCol.doc(automatonId).collection("topics").doc(topic).set({
                             name: topic,
                             created_at: admin.firestore.Timestamp.fromDate(currentDate),
                             updated_at: admin.firestore.Timestamp.fromDate(currentDate)
-                        }, {merge: true})
+                        }, { merge: true })
                     }
-                    else{
-                        automatonsCol.doc(automaton).collection("topics").doc(topic).set({
+                    else {
+                        automatonsCol.doc(automatonId).collection("topics").doc(topic).set({
                             updated_at: admin.firestore.Timestamp.fromDate(currentDate)
-                        }, {merge: true})
+                        }, { merge: true })
                     }
                 })
 
-            let fluxDoc = automatonsCol.doc(automaton).collection("topics").doc(topic).collection("flux").doc()
+            let fluxDoc = automatonsCol.doc(automatonId).collection("topics").doc(topic).collection("flux").doc()
 
             fluxDoc.set({
                 message: packet.payload.toString('utf8'),
                 timestamp: admin.firestore.Timestamp.fromDate(currentDate)
-            }, {merge: false});
-            console.log(`Automaton ${automaton} send :`)
+            }, { merge: false });
+            console.log(`Automaton ${automatonName} send :`)
             console.log(`Topic : ${topic}`)
             console.log(`Message : ${packet.payload.toString('utf8')}`)
         })
@@ -93,21 +104,24 @@ server.on('connection', function (stream) {
 
         // connection error handling
         client.on('close', function () {
-            console.log(`Automaton ${automaton} connection close`)
+            automatonsCol.doc(automatonId).set({
+                connected: false
+            }, { merge: true })
+            console.log(`Automaton ${automatonName} connection close`)
             client.destroy()
         })
         client.on('error', function () {
-            console.log(`Automaton ${automaton} connection error`)
+            console.log(`Automaton ${automatonName} connection error`)
             client.destroy()
         })
         client.on('disconnect', function () {
-            console.log(`Automaton ${automaton} connection disconnect`)
+            console.log(`Automaton ${automatonName} connection disconnect`)
             client.destroy()
         })
 
         // stream timeout
         stream.on('timeout', function () {
-            console.log(`Automaton ${automaton} connection timeout`)
+            console.log(`Automaton ${automatonName} connection timeout`)
             client.destroy()
         })
     })

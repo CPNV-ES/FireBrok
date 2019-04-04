@@ -2,7 +2,7 @@
 
 ## Docs
 
-* **[Deploying app to firebase](./firebase_deploy.md)**
+* **[Install and deploy firebase app](./firebase_deploy.md)**
 * **[Installing aggregator](./aggregator_installation.md)**
 * **[Manage firestore rules](./firestore.md)**
 * **[Simulate an MQTT client](./simulators.md)**

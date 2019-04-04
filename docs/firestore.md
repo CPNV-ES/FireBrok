@@ -5,3 +5,5 @@
 ## Securtity rules
 
 To manage the securtity rules of the firestores and check user access, you need to edit the `firestore.rules` file.
+
+To install the new rules on firestore, use the `firebase deploy --only firestore` command.
